@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <title>答案之书</title>
+
+  <!-- 适配 iPhone / Safari / 刘海屏 -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#e5ddd0" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="答案之书" />
+
+  <!-- 上传好 icon-192.png 之后，这行就会生效作为主屏幕图标 -->
+  <link rel="apple-touch-icon" href="icon-192.png" />
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      height: 100%;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", system-ui, sans-serif;
+      background:
+        radial-gradient(circle at top, rgba(255, 255, 255, 0.9), transparent 60%),
+        linear-gradient(180deg, #f4ece0, #e1d6c7);
+      color: #2f3235;
+      display: flex;
+      align-items: stretch;
+      justify-content: center;
+      padding: env(safe-area-inset-top) 0 env(safe-area-inset-bottom);
+    }
+
+    .app-shell {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .app {
+      width: 100%;
+      max-width: 420px;
+      margin: 0 20px;
+      background: rgba(255, 253, 248, 0.9);
+      border-radius: 24px;
+      padding: 24px 20px 28px;
+      box-shadow:
+        0 22px 50px rgba(148, 125, 94, 0.35),
+        0 0 0 1px rgba(156, 163, 175, 0.15);
+      backdrop-filter: blur(16px);
+    }
+
+    /* 顶部 Logo + 标题 */
+
+    .header {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .logo-wrap {
+      width: 72px;
+      height: 72px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 30% 20%, #fffaf3, #e1d3c0);
+      box-shadow:
+        0 10px 20px rgba(107, 83, 54, 0.25),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      margin-bottom: 10px;
+    }
+
+    .logo-book {
+      position: relative;
+      width: 40px;
+      height: 28px;
+      border-radius: 6px;
+      background: linear-gradient(135deg, #fdf7ee, #e5d6c2);
+      box-shadow:
+        0 4px 6px rgba(120, 94, 65, 0.2),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.9);
+      overflow: hidden;
+    }
+
+    .logo-book::before,
+    .logo-book::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      width: 50%;
+      height: 100%;
+      border-right: 1px solid rgba(199, 178, 150, 0.8);
+    }
+
+    .logo-book::after {
+      right: 0;
+      left: auto;
+      border-right: none;
+      border-left: 1px solid rgba(199, 178, 150, 0.6);
+    }
+
+    .logo-star {
+      position: absolute;
+      top: 12px;
+      right: 14px;
+      width: 9px;
+      height: 9px;
+      background: conic-gradient(from 0deg, #f9e3b0, #f6b66c, #fbe6b9, #f9e3b0);
+      clip-path: polygon(
+        50% 0%,
+        61% 38%,
+        100% 38%,
+        69% 59%,
+        82% 100%,
+        50% 75%,
+        18% 100%,
+        31% 59%,
+        0% 38%,
+        39% 38%
+      );
+      box-shadow: 0 0 6px rgba(245, 187, 92, 0.8);
+    }
+
+    .title {
+      font-size: 22px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #3c342e;
+      margin-bottom: 2px;
+    }
+
+    .subtitle {
+      font-size: 12px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: #9c8c7a;
+    }
+
+    /* 文案 + 按钮 */
+
+    .hint {
+      font-size: 14px;
+      color: #6b6a66;
+      text-align: center;
+      margin: 18px 10px 16px;
+      line-height: 1.6;
+    }
+
+    .primary-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      padding: 12px 20px;
+      border-radius: 999px;
+      border: none;
+      outline: none;
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      cursor: pointer;
+      background: linear-gradient(135deg, #c5a889, #b18b67);
+      color: #fdfaf5;
+      box-shadow:
+        0 10px 20px rgba(130, 101, 70, 0.4),
+        0 0 0 1px rgba(255, 255, 255, 0.6);
+      transition:
+        transform 0.12s ease,
+        box-shadow 0.12s ease,
+        filter 0.12s ease;
+    }
+
+    .primary-button:hover {
+      transform: translateY(-1px);
+      box-shadow:
+        0 13px 24px rgba(130, 101, 70, 0.5),
+        0 0 0 1px rgba(255, 255, 255, 0.8);
+      filter: brightness(1.02);
+    }
+
+    .primary-button:active {
+      transform: translateY(1px) scale(0.98);
+      box-shadow:
+        0 6px 14px rgba(130, 101, 70, 0.4),
+        0 0 0 1px rgba(255, 255, 255, 0.5);
+    }
+
+    .button-note {
+      font-size: 11px;
+      color: #9b9185;
+      text-align: center;
+      margin-top: 6px;
+      margin-bottom: 12px;
+    }
+
+    /* 答案卡片外层：提供 3D 视角 */
+
+    .section-label {
+      font-size: 11px;
+      color: #a0978a;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .answer-card {
+      perspective: 1200px; /* 重点：3D 视角 */
+    }
+
+    .answer-inner {
+      position: relative;
+      width: 100%;
+      min-height: 88px;
+      border-radius: 18px;
+      transform-style: preserve-3d;
+      transition: transform 0.5s ease-out;
+      cursor: default;
+    }
+
+    .answer-inner.flipped {
+      transform: rotateY(180deg);
+    }
+
+    .answer-face {
+      position: absolute;
+      inset: 0;
+      border-radius: 18px;
+      padding: 14px 14px;
+      background:
+        radial-gradient(circle at top left, rgba(255, 255, 255, 0.9), transparent 60%),
+        linear-gradient(145deg, #f6efe4, #e8ddcf);
+      box-shadow:
+        0 10px 24px rgba(149, 131, 110, 0.35),
+        0 0 0 1px rgba(196, 177, 152, 0.6);
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden; /* 兼容 Safari */
+    }
+
+    .answer-face.back {
+      transform: rotateY(180deg);
+    }
+
+    .answer-glow {
+      position: absolute;
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(247, 224, 168, 0.35), transparent 70%);
+      right: -20px;
+      top: -40px;
+      pointer-events: none;
+    }
+
+    .answer-text {
+      position: relative;
+      font-size: 17px;
+      line-height: 1.7;
+      color: #474036;
+    }
+
+    /* 页脚 */
+
+    .footer {
+      margin-top: 12px;
+      font-size: 11px;
+      color: #a1988b;
+      text-align: center;
+      line-height: 1.6;
+    }
+
+    .footer span {
+      display: block;
+    }
+
+    @media (max-width: 480px) {
+      .app {
+        margin: 0 14px;
+        padding: 20px 16px 24px;
+        border-radius: 22px;
+      }
+      .title {
+        font-size: 20px;
+      }
+      .answer-text {
+        font-size: 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <main class="app">
+      <header class="header">
+        <div class="logo-wrap">
+          <div class="logo-book"></div>
+          <div class="logo-star"></div>
+        </div>
+        <div class="title">答案之书</div>
+        <div class="subtitle">THE BOOK OF ANSWERS</div>
+      </header>
+
+      <p class="hint">
+        在心里轻轻想一个问题，关于你自己、工作、孕期或生活。<br />
+        然后按下按钮，让今天的答案缓缓翻页出现。
+      </p>
+
+      <button id="askButton" class="primary-button">
+        给我一个答案
+      </button>
+      <div class="button-note">
+        若答案让你微笑，那就多停留几秒钟。
+      </div>
+
+      <div class="section-label">今日给你的指引</div>
+
+      <!-- 翻牌容器 -->
+      <section class="answer-card">
+        <div id="answerInner" class="answer-inner">
+          <!-- 正面 -->
+          <div class="answer-face front">
+            <div class="answer-glow"></div>
+            <div id="frontText" class="answer-text">
+              点击上方按钮，翻开今天的书页。
+            </div>
+          </div>
+          <!-- 背面 -->
+          <div class="answer-face back">
+            <div class="answer-glow"></div>
+            <div id="backText" class="answer-text">
+              愿你在这里，遇见一点点温柔。
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <footer class="footer">
+        <span>这些答案仅供参考，</span>
+        <span>真正的答案始终在你心里。</span>
+      </footer>
+    </main>
+  </div>
+
+  <script>
+    // 这里是示例短版 answers
+    // 你可以用你那 300 条长版直接整体替换这一段 const answers = [...]
+    const answers = [
+      // --- 温柔鼓励 ---
+      "你已经做得很好了，给自己一点认可。",
+      "深呼吸一下，你比自己想象的更强大。",
+      "你正在往正确的方向走。",
+      "今天的你，也值得被温柔以待。",
+      "坚持的每一步，都算数。",
+
+      // --- 孕期 ---
+      "你正在做一件宇宙都尊敬的大事。",
+      "你已经很辛苦了，要对自己温柔一点。",
+      "宝宝会很理解你的，先照顾好你自己。",
+      "每一次不舒服都是在提醒：你真的很伟大。",
+      "不需要做到完美，健康和快乐更重要。",
+
+      // --- 职场 ---
+      "不是你不行，是事情本来就很难。",
+      "你比你想象的更专业。",
+      "再走一步，你就会看到新的风景。",
+      "放轻松，世界不会因为你休息五分钟而崩塌。",
+      "你做事的态度已经打败了很多人。",
+
+      // --- 搞笑一点 ---
+      "别慌，慌也没用。",
+      "先吃点东西，不然连崩溃都没力气。",
+      "今天不想上班？很好，说明你很正常。",
+      "你不是胖，是可爱体质略微过量。",
+      "实在不行就吃点好吃的安慰一下自己。",
+
+      // --- 情绪支持 ---
+      "你现在不需要做决定，你只需要好好呼吸。",
+      "慢慢来，快一点也不一定更好。",
+      "你的感受很重要，值得被好好对待。",
+      "你不需要一直坚强。",
+      "你已经撑过了更难的日子，这次也会。"
+    ];
+
+    const askButton = document.getElementById("askButton");
+    const answerInner = document.getElementById("answerInner");
+    const frontText = document.getElementById("frontText");
+    const backText = document.getElementById("backText");
+
+    let flipped = false; // 当前显示的是哪一面
+
+    function getRandomAnswer() {
+      const index = Math.floor(Math.random() * answers.length);
+      return answers[index];
+    }
+
+    askButton.addEventListener("click", () => {
+      const newAnswer = getRandomAnswer();
+
+      // 每次点击：翻转 180°，中途更换背面的文字
+      flipped = !flipped;
+      answerInner.classList.toggle("flipped", flipped);
+
+      // 在翻转的一半时（250ms）更新“另一面”的文字
+      setTimeout(() => {
+        if (flipped) {
+          backText.textContent = newAnswer;
+        } else {
+          frontText.textContent = newAnswer;
+        }
+      }, 250);
+    });
+  </script>
+</body>
+</html>
